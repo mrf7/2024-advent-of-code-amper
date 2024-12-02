@@ -20,3 +20,7 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
  */
 
 inline fun <T> T?.alsoPrint(message: T?.() -> String = { toString() }) = also { println(message(this)) }
+
+fun String.splitSpace() = this.split("\\s+".toRegex())
+
+fun String.splitInts() = this.splitSpace().map { it.toInt() }

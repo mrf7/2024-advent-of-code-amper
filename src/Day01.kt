@@ -2,8 +2,8 @@ import kotlin.math.absoluteValue
 
 fun main() {
     fun splitLists(input: List<String>) = input.map {
-        val (first, second) = it.split("\\s+".toRegex())
-        first.toInt() to second.toInt()
+        val (first, second) = it.splitInts()
+        first to second
     }.unzip()
 
     fun part1(input: List<String>): Int {
