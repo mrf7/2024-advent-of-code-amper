@@ -11,6 +11,6 @@ fun main() {
     check(part1(listOf("...")) == 1)
 
     val input = readInput("Day$Day")
-    part1(input).println()
-    part2(input).println()
+    part1(input).alsoPrint()
+    part2(input).alsoPrint()
 }
