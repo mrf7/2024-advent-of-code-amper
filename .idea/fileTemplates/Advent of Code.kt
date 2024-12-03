@@ -8,7 +8,7 @@ fun main() {
         return input.size
     }
 
-    check(part1(listOf("...")) == 1)
+    part1(listOf("...")) shouldBe 1
 
     val input = readInput("Day$Day")
     part1(input).alsoPrint()
