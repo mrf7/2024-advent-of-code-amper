@@ -1,45 +1,31 @@
 import io.kotest.matchers.shouldBe
-import org.jetbrains.kotlinx.multik.api.Multik
-import org.jetbrains.kotlinx.multik.api.toNDArray
-import org.jetbrains.kotlinx.multik.ndarray.data.get
 
 typealias Coord = Pair<Int, Int>
 
-enum class Direction(val traverseX: Int, val traverseY: Int) {
-    UpLeft(-1, -1), Up(0, -1), UpRight(1, -1),
-    Left(-1, 0), /*         Origin          */ Right(1, 0),
-    DownLeft(-1, 1), Down(0, 1), DownRight(1, 1)
-
-}
-
 fun main() {
     fun stringInDirection(matrix: List<String>, origin: Coord, direction: Direction, length: Int = 4): String {
-        val (originX, originY) = origin
         return (0..<length).map {
-            (originX + direction.traverseX * it) to (originY + direction.traverseY * it)
+            origin.move(direction, it)
         }.mapNotNull { (x, y) ->
             matrix.getOrNull(y)?.getOrNull(x)
         }.joinToString(separator = "")
     }
 
     fun part1(input: List<String>): Int {
-        return input.withIndex().sumOf { (y, line) ->
-            line.withIndex().filter { it.value == 'X' }.sumOf { (x, char) ->
-                Direction.entries.count {
-                    "XMAS" == stringInDirection(input, Coord(x, y), it)
-                }
+        return input.twoDSequence().filter { it.second == 'X' }.sumOf { (coord, _) ->
+            val (x, y) = coord
+            Direction.entries.count {
+                "XMAS" == stringInDirection(input, Coord(x, y), it)
             }
         }
     }
 
     fun String.equalsAnyOrder(other: String) = this == other || this == other.reversed()
     fun part2(input: List<String>): Int {
-        return input.withIndex().sumOf { (y, line) ->
-            line.withIndex().filter { it.value == 'A' }.count { (x, char) ->
-                val leftCross = stringInDirection(input, Coord(x - 1, y - 1), Direction.DownRight, 3)
-                val rightCross = stringInDirection(input, Coord(x + 1, y - 1), Direction.DownLeft, 3)
-                leftCross.equalsAnyOrder("MAS") && rightCross.equalsAnyOrder("MAS")
-            }
+        return input.twoDSequence().filter { it.second == 'A' }.count { (coord, _) ->
+            val leftCross = stringInDirection(input, coord.move(Direction.UpLeft), Direction.DownRight, 3)
+            val rightCross = stringInDirection(input, coord.move(Direction.UpRight), Direction.DownLeft, 3)
+            leftCross.equalsAnyOrder("MAS") && rightCross.equalsAnyOrder("MAS")
         }
     }
 
