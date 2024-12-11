@@ -1,5 +1,10 @@
 product: jvm/app
 
+settings:
+  jvm:
+    mainClass: Day06Kt
 dependencies:
   - org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0
   - io.kotest:kotest-assertions-core:5.9.1
+  - com.github.ajalt:mordant:1.2.1
+  - com.github.ajalt.mordant:mordant-coroutines:2.7.1
