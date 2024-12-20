@@ -1,3 +1,4 @@
+import com.github.ajalt.mordant.rendering.TextColors
 import java.math.BigInteger
 import java.security.MessageDigest
 import kotlin.io.path.Path
@@ -24,7 +25,8 @@ inline fun <T> T.alsoPrint(message: T.() -> String = { toString() }) = also { pr
 
 fun String.splitSpace() = this.split("\\s+".toRegex())
 
-fun String.splitInts() = this.splitSpace().map { it.toInt() }
+fun String.splitInts(regex: Regex = "\\s+".toRegex()) = this.split(regex).map { it.toInt() }
+fun String.splitInts(regex: String) = this.split(regex).map { it.toInt() }
 
 enum class Direction(val traverseX: Int, val traverseY: Int) {
     UpLeft(-1, -1), Up(0, -1), UpRight(1, -1),
@@ -44,3 +46,21 @@ fun List<String>.twoDSequence() = sequence {
     }
 }
 
+operator fun <T> List<List<T>>.get(x: Int, y: Int): T? {
+    return getOrNull(y)?.getOrNull(x)
+}
+
+operator fun <T> List<List<T>>.get(coord: Coord): T? {
+    return getOrNull(coord.second)?.getOrNull(coord.first)
+}
+
+operator fun <T> MutableList<MutableList<T>>.set(x: Int, y: Int, new: T) {
+    getOrNull(y)?.set(x, new)
+}
+
+operator fun <T> MutableList<MutableList<T>>.set(coord: Coord, new: T) {
+    getOrNull(coord.second)?.set(coord.first, new)
+}
+
+fun String.color(colors: TextColors) =
+    colors(this)
